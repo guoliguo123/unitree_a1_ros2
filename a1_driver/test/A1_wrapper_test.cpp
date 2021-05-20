@@ -16,15 +16,15 @@
 #include "a1_driver/A1_wrapper.hpp"
 //Test 1 : Setup mode
 TEST(A1WrapperTest, SetupModeTest) {
-    bool ret;
-    A1Wrapper wrapper = A1Wrapper(HIGH_LEVEL);
-    uint8_t mode = 2;
-    ret = wrapper.set_mode(mode);
-    EXPECT_EQ(mode, wrapper.highCmd.mode);
-    EXPECT_EQ(ret, true);
-    mode = 3;
-    ret = wrapper.set_mode(mode);
-    EXPECT_EQ(ret, false);
+  bool ret;
+  A1Wrapper wrapper = A1Wrapper(HIGH_LEVEL);
+  uint8_t mode = 2;
+  ret = wrapper.set_mode(mode);
+  EXPECT_EQ(mode, wrapper.highCmd.mode);
+  EXPECT_EQ(ret, true);
+  mode = 3;
+  ret = wrapper.set_mode(mode);
+  EXPECT_EQ(ret, false);
 }
 
 //Test 2 : Setup velocity
@@ -51,12 +51,12 @@ TEST(A1WrapperTest, SetupVelTest) {
   EXPECT_EQ(ret, true);
   //Test 2.3: Check vaild
   float set_speed;
-  for (int i = 0; i < 2; i++)
-  {
-    if (i == 0)
+  for (int i = 0; i < 2; i++) {
+    if (i == 0) {
       set_speed = 1.2;
-    else
+    } else {
       set_speed = -1.2;
+    }
     ret = wrapper.set_velocity(set_speed, 0.0, 0.0);
     EXPECT_EQ(ret, false);
     ret = wrapper.set_velocity(0.0, set_speed, 0.0);
@@ -87,11 +87,11 @@ TEST(A1WrapperTest, SetupVelTest) {
 }
 int main(int argc, char ** argv)
 {
-    ::testing::InitGoogleTest(&argc, argv);
-    // initialize ROS
-    rclcpp::init(argc, argv);
-    bool all_successful = RUN_ALL_TESTS();
-    // shutdown ROS
-    rclcpp::shutdown();
-    return all_successful;
+  ::testing::InitGoogleTest(&argc, argv);
+  // initialize ROS
+  rclcpp::init(argc, argv);
+  bool all_successful = RUN_ALL_TESTS();
+  // shutdown ROS
+  rclcpp::shutdown();
+  return all_successful;
 }

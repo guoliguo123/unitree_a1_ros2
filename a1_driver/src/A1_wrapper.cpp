@@ -18,20 +18,23 @@ bool A1Wrapper::set_velocity(
   float forwardSpeed, float sideSpeed,
   float rotateSpeed)
 {
-  if (forwardSpeed > POSITIVE_WALK_SPEED_MAX || forwardSpeed < NEGATIVE_WALK_SPEED_MAX)
-      return false;
-  if (sideSpeed > POSITIVE_WALK_SPEED_MAX || sideSpeed < NEGATIVE_WALK_SPEED_MAX)
-      return false;
-  if (rotateSpeed > POSITIVE_WALK_SPEED_MAX || rotateSpeed < NEGATIVE_WALK_SPEED_MAX)
-      return false;
+  if (forwardSpeed > POSITIVE_WALK_SPEED_MAX || forwardSpeed < NEGATIVE_WALK_SPEED_MAX) {
+    return false;
+  }
+  if (sideSpeed > POSITIVE_WALK_SPEED_MAX || sideSpeed < NEGATIVE_WALK_SPEED_MAX) {
+    return false;
+  }
+  if (rotateSpeed > POSITIVE_WALK_SPEED_MAX || rotateSpeed < NEGATIVE_WALK_SPEED_MAX) {
+    return false;
+  }
   memset(&highCmd, 0, sizeof(highCmd));
   if (forwardSpeed == 0 && sideSpeed == 0 && rotateSpeed == 0) {
-      highCmd.mode = CMD_SET_MODE_FORCE_STAND;
+    highCmd.mode = CMD_SET_MODE_FORCE_STAND;
   } else {
-      highCmd.mode = CMD_SET_MODE_WALK;
-      highCmd.forwardSpeed = forwardSpeed;
-      highCmd.sideSpeed = sideSpeed;
-      highCmd.rotateSpeed = rotateSpeed;
+    highCmd.mode = CMD_SET_MODE_WALK;
+    highCmd.forwardSpeed = forwardSpeed;
+    highCmd.sideSpeed = sideSpeed;
+    highCmd.rotateSpeed = rotateSpeed;
   }
   udp.SetSend(highCmd);
   return true;
@@ -39,8 +42,9 @@ bool A1Wrapper::set_velocity(
 
 bool A1Wrapper::set_mode(uint8_t mode)
 {
-  if (mode > CMD_SET_MODE_WALK)
+  if (mode > CMD_SET_MODE_WALK) {
     return false;
+  }
   memset(&highCmd, 0, sizeof(highCmd));
   highCmd.mode = mode;
   if (udp.SetSend(highCmd) != 0) {
@@ -52,14 +56,18 @@ bool A1Wrapper::set_mode(uint8_t mode)
 
 bool A1Wrapper::set_pose(float yaw, float pitch, float roll, float bodyHeight)
 {
-  if (yaw > POSITIVE_WALK_SPEED_MAX || yaw < NEGATIVE_WALK_SPEED_MAX)
+  if (yaw > POSITIVE_WALK_SPEED_MAX || yaw < NEGATIVE_WALK_SPEED_MAX) {
     return false;
-  if (pitch > POSITIVE_WALK_SPEED_MAX || pitch < NEGATIVE_WALK_SPEED_MAX)
+  }
+  if (pitch > POSITIVE_WALK_SPEED_MAX || pitch < NEGATIVE_WALK_SPEED_MAX) {
     return false;
-  if (roll > POSITIVE_WALK_SPEED_MAX || roll < NEGATIVE_WALK_SPEED_MAX)
+  }
+  if (roll > POSITIVE_WALK_SPEED_MAX || roll < NEGATIVE_WALK_SPEED_MAX) {
     return false;
-  if (bodyHeight > POSITIVE_WALK_SPEED_MAX || bodyHeight < NEGATIVE_WALK_SPEED_MAX)
+  }
+  if (bodyHeight > POSITIVE_WALK_SPEED_MAX || bodyHeight < NEGATIVE_WALK_SPEED_MAX) {
     return false;
+  }
   memset(&highCmd, 0, sizeof(highCmd));
   highCmd.mode = CMD_SET_MODE_FORCE_STAND;
   highCmd.yaw = yaw;
