@@ -105,15 +105,15 @@ int main(int argc, char * argv[])
     print_help();
     return -1;
   }
-
+  rclcpp::init(argc, argv);
   if (arg_mode == "sports") {
     A1ROS a1_ros = A1ROS(node_name, STARTUP_SPORT_MODE, level);
     cout << "[SPORT_MODE]:creating a node named :" << node_name << endl;
-    a1_ros.node_init(argc, argv);
+    a1_ros.node_init();
   } else if (arg_mode == "basic") {
     A1ROS a1_ros = A1ROS(node_name, level);
     cout << "[BASIC_MODE]:creating a node named :" << node_name << endl;
-    a1_ros.node_init(argc, argv);
+    a1_ros.node_init();
   } else {
     print_help();
     return -1;

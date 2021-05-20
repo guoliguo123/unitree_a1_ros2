@@ -140,10 +140,8 @@ void A1ROS::get_cartesian_msg(CartesianResponse response)
   }
 }
 
-int A1ROS::node_init(int argc, char * argv[])
+bool A1ROS::node_init()
 {
-  rclcpp::init(argc, argv);
-
   auto A1_node = rclcpp::Node::make_shared(this->node_name);
   auto vel_sub = A1_node->create_subscription<geometry_msgs::msg::Twist>(
     ROS2_TOPIC_SET_VELOCITY, 10,
@@ -165,26 +163,31 @@ int A1ROS::node_init(int argc, char * argv[])
   auto mode_service = A1_node->create_service<a1_msgs::srv::Mode>(
     ROS2_SERVICE_SET_MODE,
     [this](const ModeRequest request, ModeResponse response) {
+      RCLCPP_INFO(rclcpp::get_logger("set_mode"),"mode[%d]", request->mode);
       response->value = wrapper.set_mode(request->mode);
     });
   auto hgih_state_service = A1_node->create_service<a1_msgs::srv::HighState>(
     ROS2_SERVICE_GET_HIGH_STATE_MSG,
     [this](const HighStateRequest request, HighStateResponse response) {
+        RCLCPP_INFO(rclcpp::get_logger("get_high_state"), "get high state");
       get_high_state_msg(response);
     });
   auto low_state_service = A1_node->create_service<a1_msgs::srv::LowState>(
     ROS2_SERVICE_GET_LOW_STATE_MSG,
     [this](const LowStateRequest request, LowStateResponse response) {
+        RCLCPP_INFO(rclcpp::get_logger("get_low_state"), "get low state");
       get_low_state_msg(response);
     });
   auto imu_service = A1_node->create_service<a1_msgs::srv::Imu>(
     ROS2_SERVICE_GET_IMU_MSG,
     [this](const ImuRequest request, ImuResponse response) {
+        RCLCPP_INFO(rclcpp::get_logger("get_imu_msg"), "get imu msg");
       get_imu_msg(response);
     });
   auto cartesian_service = A1_node->create_service<a1_msgs::srv::Cartesian>(
     ROS2_SERVICE_GET_CARTESIAN_MSG,
     [this](const CartesianRequest request, CartesianResponse response) {
+        RCLCPP_INFO(rclcpp::get_logger("get_cartesian_msg"),"get cartesian msg");
       get_cartesian_msg(response);
     });
   UNITREE_LEGGED_SDK::InitEnvironment();
@@ -197,5 +200,5 @@ int A1ROS::node_init(int argc, char * argv[])
   loop_udpSend.start();
   rclcpp::spin(A1_node);
   rclcpp::shutdown();
-  return 0;
+  return true;
 }

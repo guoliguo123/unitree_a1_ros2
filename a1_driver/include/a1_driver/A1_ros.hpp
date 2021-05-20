@@ -41,7 +41,7 @@ public:
   {
     this->node_name = node_name;
   }
-  int node_init(int argc, char * argv[]);
+  bool node_init();
   void get_high_state_msg(
     std::shared_ptr<a1_msgs::srv::HighState::Response> response);
 

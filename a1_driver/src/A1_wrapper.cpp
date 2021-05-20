@@ -14,48 +14,60 @@
 
 #include "a1_driver/A1_wrapper.hpp"
 #include <time.h>
-
-void A1Wrapper::set_velocity(
+bool A1Wrapper::set_velocity(
   float forwardSpeed, float sideSpeed,
   float rotateSpeed)
 {
-  UNITREE_LEGGED_SDK::HighCmd high_cmd{};
-
+  if (forwardSpeed > POSITIVE_WALK_SPEED_MAX || forwardSpeed < NEGATIVE_WALK_SPEED_MAX)
+      return false;
+  if (sideSpeed > POSITIVE_WALK_SPEED_MAX || sideSpeed < NEGATIVE_WALK_SPEED_MAX)
+      return false;
+  if (rotateSpeed > POSITIVE_WALK_SPEED_MAX || rotateSpeed < NEGATIVE_WALK_SPEED_MAX)
+      return false;
+  memset(&highCmd, 0, sizeof(highCmd));
   if (forwardSpeed == 0 && sideSpeed == 0 && rotateSpeed == 0) {
-    high_cmd.mode = CMD_SET_MODE_FORCE_STAND;
-    high_cmd.forwardSpeed = 0;
-    high_cmd.sideSpeed = 0;
-    high_cmd.rotateSpeed = 0;
+      highCmd.mode = CMD_SET_MODE_FORCE_STAND;
   } else {
-    high_cmd.mode = CMD_SET_MODE_WALK;
-    high_cmd.forwardSpeed = forwardSpeed;
-    high_cmd.sideSpeed = sideSpeed;
-    high_cmd.rotateSpeed = rotateSpeed;
+      highCmd.mode = CMD_SET_MODE_WALK;
+      highCmd.forwardSpeed = forwardSpeed;
+      highCmd.sideSpeed = sideSpeed;
+      highCmd.rotateSpeed = rotateSpeed;
   }
-  udp.SetSend(high_cmd);
+  udp.SetSend(highCmd);
+  return true;
 }
 
 bool A1Wrapper::set_mode(uint8_t mode)
 {
-  UNITREE_LEGGED_SDK::HighCmd high_cmd{};
-  high_cmd.mode = mode;
-  if (udp.SetSend(high_cmd) != 0) {
+  if (mode > CMD_SET_MODE_WALK)
+    return false;
+  memset(&highCmd, 0, sizeof(highCmd));
+  highCmd.mode = mode;
+  if (udp.SetSend(highCmd) != 0) {
     return false;
   }
 
   return true;
 }
 
-void A1Wrapper::set_pose(float yaw, float pitch, float roll, float bodyHeight)
+bool A1Wrapper::set_pose(float yaw, float pitch, float roll, float bodyHeight)
 {
-  UNITREE_LEGGED_SDK::HighCmd high_cmd{};
-
-  high_cmd.mode = CMD_SET_MODE_FORCE_STAND;
-  high_cmd.yaw = yaw;
-  high_cmd.pitch = pitch;
-  high_cmd.roll = roll;
-  high_cmd.bodyHeight = bodyHeight;
-  udp.SetSend(high_cmd);
+  if (yaw > POSITIVE_WALK_SPEED_MAX || yaw < NEGATIVE_WALK_SPEED_MAX)
+    return false;
+  if (pitch > POSITIVE_WALK_SPEED_MAX || pitch < NEGATIVE_WALK_SPEED_MAX)
+    return false;
+  if (roll > POSITIVE_WALK_SPEED_MAX || roll < NEGATIVE_WALK_SPEED_MAX)
+    return false;
+  if (bodyHeight > POSITIVE_WALK_SPEED_MAX || bodyHeight < NEGATIVE_WALK_SPEED_MAX)
+    return false;
+  memset(&highCmd, 0, sizeof(highCmd));
+  highCmd.mode = CMD_SET_MODE_FORCE_STAND;
+  highCmd.yaw = yaw;
+  highCmd.pitch = pitch;
+  highCmd.roll = roll;
+  highCmd.bodyHeight = bodyHeight;
+  udp.SetSend(highCmd);
+  return true;
 }
 
 void A1Wrapper::recv_imu_msg() {udp.GetRecv(highState);}

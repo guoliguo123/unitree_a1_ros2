@@ -14,7 +14,7 @@
 
 #ifndef A1_COMM__A1_COMM_HPP_
 #define A1_COMM__A1_COMM_HPP_
-
+#include <stdarg.h>
 enum StartupMode { STARTUP_BASIC_MODE = 0, STARTUP_SPORT_MODE };
 enum SetLevel { HIGH_LEVEL = 0X00, LOW_LEVEL = 0xff };
 enum SetCmd
@@ -23,6 +23,8 @@ enum SetCmd
   CMD_SET_MODE_FORCE_STAND,
   CMD_SET_MODE_WALK
 };
+#define NEGATIVE_WALK_SPEED_MAX -1
+#define POSITIVE_WALK_SPEED_MAX 1
 // IMU
 #define UNITREE_A1_IMU_QUATERNION 4
 #define UNITREE_A1_IMU_ANGULAR_VELOCITY 3

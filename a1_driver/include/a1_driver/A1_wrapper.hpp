@@ -52,8 +52,8 @@ public:
   void UDPRecv() {udp.Recv();}
 
   void UDPSend() {udp.Send();}
-  void set_velocity(float forwardSpeed, float sideSpeed, float rotateSpeed);
-  void set_pose(float yaw, float pitch, float roll, float bodyHeight);
+  bool set_velocity(float forwardSpeed, float sideSpeed, float rotateSpeed);
+  bool set_pose(float yaw, float pitch, float roll, float bodyHeight);
   bool set_mode(uint8_t mode);
   void recv_high_state();
   void recv_low_state();
