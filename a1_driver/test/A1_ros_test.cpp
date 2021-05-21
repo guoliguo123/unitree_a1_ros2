@@ -17,7 +17,7 @@
 TEST(A1RosTest, SetModeTest) {
   bool ret;
   TestNode client(CMD_SET_MODE);
-  int cnt = 3;
+  int cnt = 1;
   while (cnt--) {
     sleep(1);
     ret = client.client_set_mode(2);
@@ -28,7 +28,7 @@ TEST(A1RosTest, SetModeTest) {
 TEST(A1RosTest, PubVelTest) {
   bool ret;
   TestNode pub(CMD_SET_VEL);
-  int cnt = 3;
+  int cnt = 1;
   while (cnt--) {
     sleep(1);
     ret = pub.pub_velocity(0.1, 0.1, 0.1);
@@ -38,7 +38,7 @@ TEST(A1RosTest, PubVelTest) {
 // TEST 3: set pose
 TEST(A1RosTest, PubPoseTest) {
   TestNode pub(CMD_SET_POSE);
-  int cnt = 3;
+  int cnt = 1;
   while (cnt--) {
     sleep(1);
     pub.pub_pose(0.1, 0.1, 0.1, 0.1);
