@@ -7,3 +7,7 @@ repositories:
     type: git
     url: https://github.com/lcm-proj/lcm.git
     version: master
+  gtest:
+    type: git
+    url: git clone https://github.com/google/googletest.git
+    version: master
