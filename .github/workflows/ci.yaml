@@ -16,5 +16,5 @@ jobs:
           package-name:
             a1_msgs
             a1_driver
-          target-ros2-distro: rolling
+          target-ros2-distro: foxy
           vcs-repo-file-url: unitree_a1_ros2.repos
