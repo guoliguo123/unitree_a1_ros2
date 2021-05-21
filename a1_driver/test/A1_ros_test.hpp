@@ -146,6 +146,7 @@ bool TestNode::client_set_mode(uint8_t mode)
       return false;
     }
   }
+  return true;
   request->mode = mode;
   auto result = mode_client->async_send_request(request);
   // Wait for the result.
