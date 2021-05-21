@@ -16,7 +16,7 @@
 // TEST 1: set mode
 TEST(A1RosTest, SetModeTest) {
   bool ret = true;
-  // TestNode client(CMD_SET_MODE);
+  TestNode client(CMD_SET_MODE);
   int cnt = 3;
   while (cnt--) {
     // sleep(1);
