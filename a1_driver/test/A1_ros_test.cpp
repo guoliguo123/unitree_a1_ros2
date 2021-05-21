@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include "A1_ros_test.hpp"
-#if 0
 // TEST 1: set mode
 TEST(A1RosTest, SetModeTest) {
   bool ret;
@@ -45,7 +44,7 @@ TEST(A1RosTest, PubPoseTest) {
     pub.pub_pose(0.1, 0.1, 0.1, 0.1);
   }
 }
-
+#if 0
 // TEST 4: get cartesian msg
 TEST(A1RosTest, GetCartesian) {
   bool ret;
@@ -93,16 +92,12 @@ TEST(A1RosTest, GetImu) {
   }
 }
 #endif
-TEST(A1RosTest, Test) {
-  bool ret = true;
-  EXPECT_EQ(ret, true);
-}
 int main(int argc, char ** argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
   // initialize ROS
   rclcpp::init(argc, argv);
-  // startTestPthread start("a1_node", HIGH_LEVEL);
+  startTestPthread start("a1_node", HIGH_LEVEL);
   bool all_successful = RUN_ALL_TESTS();
   // shutdown ROS
   rclcpp::shutdown();
