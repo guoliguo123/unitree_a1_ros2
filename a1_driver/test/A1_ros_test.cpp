@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "A1_ros_test.hpp"
-//TEST 1: set mode
+// TEST 1: set mode
 TEST(A1RosTest, SetModeTest) {
   bool ret;
   TestNode client(CMD_SET_MODE);
@@ -24,7 +24,7 @@ TEST(A1RosTest, SetModeTest) {
     EXPECT_EQ(ret, true);
   }
 }
-//TEST 2: set velocity
+// TEST 2: set velocity
 TEST(A1RosTest, PubVelTest) {
   bool ret;
   TestNode pub(CMD_SET_VEL);
@@ -35,7 +35,7 @@ TEST(A1RosTest, PubVelTest) {
     EXPECT_EQ(ret, true);
   }
 }
-//TEST 3: set pose
+// TEST 3: set pose
 TEST(A1RosTest, PubPoseTest) {
   TestNode pub(CMD_SET_POSE);
   int cnt = 3;
@@ -44,7 +44,7 @@ TEST(A1RosTest, PubPoseTest) {
     pub.pub_pose(0.1, 0.1, 0.1, 0.1);
   }
 }
-//TEST 4: get cartesian msg
+// TEST 4: get cartesian msg
 TEST(A1RosTest, GetCartesian) {
   bool ret;
   TestNode client(CMD_GET_CARTESIAN);
@@ -55,8 +55,8 @@ TEST(A1RosTest, GetCartesian) {
     EXPECT_EQ(ret, true);
   }
 }
-#if 0 //bug
-//TEST 5: get high state
+#if 0
+// TEST 5: get high state
 TEST(A1RosTest, GetHigh) {
   bool ret;
   TestNode client(CMD_GET_HIGH_STATE);
@@ -67,7 +67,7 @@ TEST(A1RosTest, GetHigh) {
     EXPECT_EQ(ret, true);
   }
 }
-//TEST 6: get low state
+// TEST 6: get low state
 TEST(A1RosTest, GetLow) {
   bool ret;
   TestNode client(CMD_GET_LOW_STATE);
@@ -79,7 +79,7 @@ TEST(A1RosTest, GetLow) {
   }
 }
 
-//TEST 7: get imu msg
+// TEST 7: get imu msg
 TEST(A1RosTest, GetImu) {
   bool ret;
   TestNode client(CMD_GET_IMU);

@@ -14,7 +14,7 @@
 #include <gtest/gtest.h>
 #include "rclcpp/rclcpp.hpp"
 #include "a1_driver/A1_wrapper.hpp"
-//Test 1 : Setup mode
+// Test 1 : Setup mode
 TEST(A1WrapperTest, SetupModeTest) {
   bool ret;
   A1Wrapper wrapper = A1Wrapper(HIGH_LEVEL);
@@ -27,10 +27,10 @@ TEST(A1WrapperTest, SetupModeTest) {
   EXPECT_EQ(ret, false);
 }
 
-//Test 2 : Setup velocity
+// Test 2 : Setup velocity
 TEST(A1WrapperTest, SetupVelTest) {
   A1Wrapper wrapper = A1Wrapper(STARTUP_SPORT_MODE, HIGH_LEVEL);
-  //Test 2.1: Setup velocity
+  // Test 2.1: Setup velocity
   bool ret;
   float forwardSpeed = 0.2;
   float sideSpeed = 0.2;
@@ -42,14 +42,14 @@ TEST(A1WrapperTest, SetupVelTest) {
   EXPECT_EQ(rotateSpeed, wrapper.highCmd.rotateSpeed);
   EXPECT_EQ(CMD_SET_MODE_WALK, wrapper.highCmd.mode);
   EXPECT_EQ(ret, true);
-  //Test 2.2: Clear set
+  // Test 2.2: Clear set
   ret = wrapper.set_velocity(0.0, 0.0, 0.0);
   EXPECT_EQ(0.0, wrapper.highCmd.forwardSpeed);
   EXPECT_EQ(0.0, wrapper.highCmd.sideSpeed);
   EXPECT_EQ(0.0, wrapper.highCmd.rotateSpeed);
   EXPECT_EQ(CMD_SET_MODE_FORCE_STAND, wrapper.highCmd.mode);
   EXPECT_EQ(ret, true);
-  //Test 2.3: Check vaild
+  // Test 2.3: Check vaild
   float set_speed;
   for (int i = 0; i < 2; i++) {
     if (i == 0) {
@@ -64,7 +64,7 @@ TEST(A1WrapperTest, SetupVelTest) {
     ret = wrapper.set_velocity(0.0, 0.0, set_speed);
     EXPECT_EQ(ret, false);
 
-    //Test 3: Setup pose
+    // Test 3: Setup pose
     float yaw = 0.3;
     float pitch = 0.3;
     float roll = 0.3;

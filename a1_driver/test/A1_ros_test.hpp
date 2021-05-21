@@ -11,10 +11,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef UNITREE_A1_ROS2_A1_ROS_TEST_H
-#define UNITREE_A1_ROS2_A1_ROS_TEST_H
+#ifndef A1_ROS_TEST_HPP_
+#define A1_ROS_TEST_HPP_
 #include <boost/thread/thread.hpp>
 #include <gtest/gtest.h>
+#include <string>
+#include <memory>
 #include "a1_driver/A1_ros.hpp"
 #include "a1_driver/A1_wrapper.hpp"
 
@@ -28,7 +30,7 @@ enum command
   CMD_GET_IMU,
   CMD_GET_CARTESIAN
 };
-using namespace std::chrono_literals;
+using std::chrono_literals;
 
 class startTestPthread
 {
@@ -49,7 +51,7 @@ public:
 class TestNode
 {
 public:
-  TestNode(uint8_t command);
+  explicit TestNode(uint8_t command);
   bool client_set_mode(uint8_t mode);
   bool pub_velocity(float forwardSpeed, float sideSpeed, float rotateSpeed);
   void pub_pose(float yaw, float pitch, float roll, float bodyHeight);
@@ -175,7 +177,7 @@ bool TestNode::client_node_get_high_state()
   if (rclcpp::spin_until_future_complete(node, result) ==
     rclcpp::executor::FutureReturnCode::SUCCESS)
   {
-    //auto HighState = result.get();
+    // auto HighState = result.get();
   } else {
     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service");
     return false;
@@ -200,7 +202,7 @@ bool TestNode::client_node_get_low_state()
   if (rclcpp::spin_until_future_complete(node, result) ==
     rclcpp::executor::FutureReturnCode::SUCCESS)
   {
-    //auto LowState = result.get();
+    // auto LowState = result.get();
   } else {
     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service");
     return false;
@@ -225,7 +227,7 @@ bool TestNode::client_node_get_imu_msg()
   if (rclcpp::spin_until_future_complete(node, result) ==
     rclcpp::executor::FutureReturnCode::SUCCESS)
   {
-    //auto IMU = result.get();
+    // auto IMU = result.get();
 
   } else {
     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service");
@@ -258,4 +260,4 @@ bool TestNode::client_node_get_cartesian_msg()
   }
   return true;
 }
-#endif //UNITREE_A1_ROS2_A1_ROS_TEST_H
+#endif  // A1_ROS_TEST_HPP_
