@@ -16,13 +16,13 @@
 // TEST 1: set mode
 TEST(A1RosTest, SetModeTest) {
   bool ret = true;
-  //TestNode client(CMD_SET_MODE);
+  // TestNode client(CMD_SET_MODE);
   int cnt = 1;
-  while (cnt--) {
-    sleep(1);
-    //ret = client.client_set_mode(2);
-    EXPECT_EQ(ret, true);
-  }
+  // while (cnt--) {
+  // sleep(1);
+  // ret = client.client_set_mode(2);
+  EXPECT_EQ(ret, true);
+  // }
 }
 #if 0
 // TEST 2: set velocity
