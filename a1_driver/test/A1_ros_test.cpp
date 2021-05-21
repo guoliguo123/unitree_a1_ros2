@@ -20,7 +20,7 @@ TEST(A1RosTest, SetModeTest) {
   int cnt = 3;
   while (cnt--) {
     // sleep(1);
-    // ret = client.client_set_mode(2);
+    ret = client.client_set_mode(2);
     EXPECT_EQ(ret, true);
   }
 }
