@@ -44,6 +44,7 @@ TEST(A1RosTest, PubPoseTest) {
     pub.pub_pose(0.1, 0.1, 0.1, 0.1);
   }
 }
+#if 0
 // TEST 4: get cartesian msg
 TEST(A1RosTest, GetCartesian) {
   bool ret;
@@ -55,7 +56,7 @@ TEST(A1RosTest, GetCartesian) {
     EXPECT_EQ(ret, true);
   }
 }
-#if 0
+
 // TEST 5: get high state
 TEST(A1RosTest, GetHigh) {
   bool ret;
