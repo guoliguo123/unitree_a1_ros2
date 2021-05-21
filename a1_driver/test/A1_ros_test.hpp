@@ -30,7 +30,8 @@ enum command
   CMD_GET_IMU,
   CMD_GET_CARTESIAN
 };
-using namespace std::chrono_literals;
+
+using namespace std::chrono_literals;//NOLINT
 
 class startTestPthread
 {
@@ -132,6 +133,7 @@ bool TestNode::pub_velocity(float forwardSpeed, float sideSpeed, float rotateSpe
   walk_pub->publish(msg);
   return true;
 }
+
 bool TestNode::client_set_mode(uint8_t mode)
 {
   size_t times = 0;
