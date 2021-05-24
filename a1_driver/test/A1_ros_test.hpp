@@ -30,7 +30,7 @@ enum command
   CMD_GET_IMU,
   CMD_GET_CARTESIAN
 };
-using namespace std::chrono_literals;
+using namespace std::chrono_literals;//NOLINT
 
 class startTestPthread
 {
