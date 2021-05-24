@@ -19,12 +19,12 @@ TEST(A1RosTest, SetModeTest) {
   TestNode client(CMD_SET_MODE);
   int cnt = 3;
   while (cnt--) {
-    // sleep(1);
+    sleep(1);
     ret = client.client_set_mode(2);
     EXPECT_EQ(ret, false);
   }
 }
-#if 0
+
 // TEST 2: set velocity
 TEST(A1RosTest, PubVelTest) {
   bool ret;
@@ -45,7 +45,7 @@ TEST(A1RosTest, PubPoseTest) {
     pub.pub_pose(0.1, 0.1, 0.1, 0.1);
   }
 }
-
+#if 0
 // TEST 4: get cartesian msg
 TEST(A1RosTest, GetCartesian) {
   bool ret;
@@ -54,7 +54,7 @@ TEST(A1RosTest, GetCartesian) {
   while (cnt--) {
     sleep(1);
     ret = client.client_node_get_cartesian_msg();
-    EXPECT_EQ(ret, true);
+    EXPECT_EQ(ret, false);
   }
 }
 
@@ -66,7 +66,7 @@ TEST(A1RosTest, GetHigh) {
   while (cnt--) {
     sleep(1);
     ret = client.client_node_get_high_state();
-    EXPECT_EQ(ret, true);
+    EXPECT_EQ(ret, false);
   }
 }
 // TEST 6: get low state
@@ -77,7 +77,7 @@ TEST(A1RosTest, GetLow) {
   while (cnt--) {
     sleep(1);
     ret = client.client_node_get_low_state();
-    EXPECT_EQ(ret, true);
+    EXPECT_EQ(ret, false);
   }
 }
 
@@ -89,7 +89,7 @@ TEST(A1RosTest, GetImu) {
   while (cnt--) {
     sleep(1);
     ret = client.client_node_get_imu_msg();
-    EXPECT_EQ(ret, true);
+    EXPECT_EQ(ret, false);
   }
 }
 #endif
