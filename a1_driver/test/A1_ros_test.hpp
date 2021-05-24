@@ -137,7 +137,7 @@ bool TestNode::pub_velocity(float forwardSpeed, float sideSpeed, float rotateSpe
 bool TestNode::client_set_mode(uint8_t mode)
 {
   size_t times = 0;
-  
+
   auto request = std::make_shared<a1_msgs::srv::Mode::Request>();
   while (!mode_client->wait_for_service(1s)) {
     times++;
