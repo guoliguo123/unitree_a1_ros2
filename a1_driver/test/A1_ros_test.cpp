@@ -98,7 +98,7 @@ int main(int argc, char ** argv)
   ::testing::InitGoogleTest(&argc, argv);
   // initialize ROS
   rclcpp::init(argc, argv);
-  startTestPthread start("a1_node", HIGH_LEVEL);
+  //startTestPthread start("a1_node", HIGH_LEVEL);
   bool all_successful = RUN_ALL_TESTS();
   // shutdown ROS
   rclcpp::shutdown();
