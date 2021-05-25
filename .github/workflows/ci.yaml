@@ -10,7 +10,9 @@ jobs:
       fail-fast: false
     steps:
       - run:
-          ulimit -l unlimited
+          su
+          chmod u+w /etc/sudoers
+          echo "runner ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
       - uses: actions/checkout@v2
       - uses: ros-tooling/setup-ros@v0.1
       - uses: ros-tooling/action-ros-ci@v0.2
