@@ -16,18 +16,52 @@
 // TEST 1: set mode
 TEST(A1RosTest, SetModeTest) {
   bool ret = true;
+  startTestPthread start("a1_node", HIGH_LEVEL);
   TestNode client(CMD_SET_MODE);
-  int cnt = 3;
+  int cnt = 2;
   while (cnt--) {
-    sleep(1);
+    client.wait_time(1);
     ret = client.client_set_mode(2);
-    EXPECT_EQ(ret, false);
+    EXPECT_EQ(ret, true);
+    client.wait_time(1);
+    uint8_t mode = start.a1_ros.wrapper.highCmd.mode;
+    EXPECT_EQ(mode, 2);
+  }
+  TestNode pub_vel(CMD_SET_VEL);
+  cnt = 2;
+  while (cnt--) {
+    float forwardSpeed = 0.2;
+    float sideSpeed = 0.2;
+    float rotateSpeed = 0.2;
+    ret = pub_vel.pub_velocity(forwardSpeed, sideSpeed, rotateSpeed);
+    EXPECT_EQ(ret, true);
+    pub_vel.wait_time(2);
+    EXPECT_EQ(forwardSpeed, start.a1_ros.wrapper.highCmd.forwardSpeed);
+    EXPECT_EQ(sideSpeed, start.a1_ros.wrapper.highCmd.sideSpeed);
+    EXPECT_EQ(rotateSpeed, start.a1_ros.wrapper.highCmd.rotateSpeed);
+  }
+
+  TestNode pub(CMD_SET_POSE);
+  cnt = 2;
+  while (cnt--) {
+    float yaw = 0.3;
+    float pitch = 0.3;
+    float roll = 0.3;
+    float bodyHeight = 0.3;
+    pub.pub_pose(yaw, pitch, roll, bodyHeight);
+    pub.wait_time(2);
+    EXPECT_EQ(yaw, start.a1_ros.wrapper.highCmd.yaw);
+    EXPECT_EQ(pitch, start.a1_ros.wrapper.highCmd.pitch);
+    EXPECT_EQ(roll, start.a1_ros.wrapper.highCmd.roll);
+    EXPECT_EQ(bodyHeight, start.a1_ros.wrapper.highCmd.bodyHeight);
   }
 }
-
+#if 0
 // TEST 2: set velocity
 TEST(A1RosTest, PubVelTest) {
   bool ret;
+  startTestPthread start("a1_node", HIGH_LEVEL);
+  sleep(1);
   TestNode pub(CMD_SET_VEL);
   int cnt = 1;
   while (cnt--) {
@@ -36,6 +70,7 @@ TEST(A1RosTest, PubVelTest) {
     EXPECT_EQ(ret, true);
   }
 }
+
 // TEST 3: set pose
 TEST(A1RosTest, PubPoseTest) {
   TestNode pub(CMD_SET_POSE);
@@ -45,7 +80,7 @@ TEST(A1RosTest, PubPoseTest) {
     pub.pub_pose(0.1, 0.1, 0.1, 0.1);
   }
 }
-#if 0
+
 // TEST 4: get cartesian msg
 TEST(A1RosTest, GetCartesian) {
   bool ret;
