@@ -39,14 +39,14 @@ public:
   startTestPthread(std::string node_name, int level)
   : a1_ros(node_name, level)
   {
-    t = boost::thread(boost::bind(&startTestPthread::pthreadLoop, this));
+    //t = boost::thread(boost::bind(&startTestPthread::pthreadLoop, this));
   }
   void pthreadLoop()
   {
-    a1_ros.node_init();
+    //a1_ros.node_init();
   }
   A1ROS a1_ros;
-  boost::thread t;
+  //boost::thread t;
 };
 
 class TestNode
@@ -62,15 +62,16 @@ public:
   bool client_node_get_cartesian_msg();
   void wait_time(int seconds)
   {
-    time_t start , cur;
+    time_t start, cur;
     start = time(NULL);
-    while(1)
-    {
+    while (1) {
       cur = time(NULL);
-      if (cur - start >= seconds)
+      if (cur - start >= seconds) {
         break;
+      }
     }
   }
+
 private:
   rclcpp::Client<a1_msgs::srv::Mode>::SharedPtr mode_client;
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr walk_pub;
