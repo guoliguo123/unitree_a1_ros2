@@ -39,14 +39,14 @@ public:
   startTestPthread(std::string node_name, int level)
   : a1_ros(node_name, level)
   {
-    t = boost::thread(boost::bind(&startTestPthread::pthreadLoop, this));
+    //t = boost::thread(boost::bind(&startTestPthread::pthreadLoop, this));
   }
   void pthreadLoop()
   {
-    a1_ros.node_init();
+    //a1_ros.node_init();
   }
   A1ROS a1_ros;
-  boost::thread t;
+  //boost::thread t;
 };
 
 class TestNode
