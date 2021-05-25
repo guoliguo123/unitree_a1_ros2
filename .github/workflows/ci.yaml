@@ -9,6 +9,8 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - run:
+          sudo ulimit -l ulimited
       - uses: actions/checkout@v2
       - uses: ros-tooling/setup-ros@v0.1
       - uses: ros-tooling/action-ros-ci@v0.2
