@@ -9,6 +9,9 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - run: |
+          sudo -u root createuser -h localhost --superuser ubuntu &&
+          sudo createdb -h localhost test_db
       - uses: actions/checkout@v2
       - uses: ros-tooling/setup-ros@v0.1
       - uses: ros-tooling/action-ros-ci@v0.2
@@ -18,6 +21,3 @@ jobs:
             a1_driver
           target-ros2-distro: foxy
           vcs-repo-file-url: unitree_a1_ros2.repos
-      - run: |
-          sudo -u root createuser -h localhost --superuser ubuntu &&
-          sudo createdb -h localhost test_db
