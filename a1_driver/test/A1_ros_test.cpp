@@ -27,7 +27,7 @@ TEST(A1RosTest, SetModeTest) {
     start.pthreadLoop();
   }
 #endif
-  //startTestPthread start("a1_node", HIGH_LEVEL);
+  // startTestPthread start("a1_node", HIGH_LEVEL);
   startTestPthread start;
   TestNode client(CMD_SET_MODE);
   int cnt = 2;
