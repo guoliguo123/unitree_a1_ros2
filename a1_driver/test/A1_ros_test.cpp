@@ -64,6 +64,9 @@ TEST(A1RosTest, SetModeTest) {
     // EXPECT_EQ(roll, start.a1_ros.wrapper.highCmd.roll);
     // EXPECT_EQ(bodyHeight, start.a1_ros.wrapper.highCmd.bodyHeight);
   }
+  std::cout << "kill child process " << std::endl;
+  int result = kill(pid, 9);
+  std::cout << "result =  " << result << std::endl;
 }
 #if 0
 // TEST 5: get high state
