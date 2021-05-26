@@ -32,21 +32,30 @@ enum command
 };
 
 using namespace std::chrono_literals;//NOLINT
-
+void* pthreadLoop(void *arg)
+{
+    A1ROS a1_ros = A1ROS("A1_node", HIGH_LEVEL);
+    a1_ros.node_init();
+}
 class startTestPthread
 {
 public:
-  startTestPthread(std::string node_name, int level)
-  : a1_ros(node_name, level)
+  startTestPthread()
   {
     // t = boost::thread(boost::bind(&startTestPthread::pthreadLoop, this));
+    pthread_create(&pthread_id, NULL, pthreadLoop, NULL);
+    pthread_detach(pthread_id);
   }
-  void pthreadLoop()
+
+#if 0
+  void* pthreadLoop(void *arg)
   {
     a1_ros.node_init();
   }
-  A1ROS a1_ros;
+#endif
+  // A1ROS a1_ros;
   // boost::thread t;
+  pthread_t pthread_id;
 };
 
 class TestNode

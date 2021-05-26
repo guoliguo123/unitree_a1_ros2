@@ -16,6 +16,7 @@
 // TEST 1: set mode
 TEST(A1RosTest, SetModeTest) {
   bool ret = true;
+#if 0
   unsigned int pid;
   pid = fork();
   if (pid < 0) {
@@ -25,7 +26,9 @@ TEST(A1RosTest, SetModeTest) {
     startTestPthread start("a1_node", HIGH_LEVEL);
     start.pthreadLoop();
   }
-
+#endif
+  //startTestPthread start("a1_node", HIGH_LEVEL);
+  startTestPthread start;
   TestNode client(CMD_SET_MODE);
   int cnt = 2;
   while (cnt--) {
@@ -64,6 +67,9 @@ TEST(A1RosTest, SetModeTest) {
     // EXPECT_EQ(roll, start.a1_ros.wrapper.highCmd.roll);
     // EXPECT_EQ(bodyHeight, start.a1_ros.wrapper.highCmd.bodyHeight);
   }
+  // std::cout << "kill child process " << std::endl;
+  // int result = kill(pid, 9);
+  // std::cout << "result =  " << result << std::endl;
 }
 #if 0
 // TEST 5: get high state
