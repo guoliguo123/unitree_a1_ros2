@@ -22,15 +22,17 @@ TEST(A1RosTest, SetModeTest) {
   if (pid < 0) {
     return;
   } else if (pid == 0) {
-    std::cout << "start child process " << std::endl;
+    std::cout << "start child process 1" << std::endl;
     startTestPthread start("a1_node", HIGH_LEVEL);
+    std::cout << "start child process 2" << std::endl;
     start.pthreadLoop();
   }
+  std::cout << "parent process " << std::endl;
 #endif
   // startTestPthread start("a1_node", HIGH_LEVEL);
-  startTestPthread start;
-  TestNode client(CMD_SET_MODE);
   int cnt = 2;
+  TestNode client(CMD_SET_MODE);
+
   while (cnt--) {
     client.wait_time(1);
     ret = client.client_set_mode(2);
@@ -39,6 +41,7 @@ TEST(A1RosTest, SetModeTest) {
     // uint8_t mode = start.a1_ros.wrapper.highCmd.mode;
     // EXPECT_EQ(mode, 2);
   }
+
   TestNode pub_vel(CMD_SET_VEL);
   cnt = 2;
   while (cnt--) {
@@ -71,24 +74,11 @@ TEST(A1RosTest, SetModeTest) {
   // int result = kill(pid, 9);
   // std::cout << "result =  " << result << std::endl;
 }
-#if 0
-// TEST 5: get high state
-TEST(A1RosTest, GetHigh) {
-  bool ret;
-  TestNode client(CMD_GET_HIGH_STATE);
-  int cnt = 3;
-  while (cnt--) {
-    sleep(1);
-    ret = client.client_node_get_high_state();
-    EXPECT_EQ(ret, false);
-  }
-}
-
-
+#if 1
 // TEST 2: set velocity
 TEST(A1RosTest, PubVelTest) {
   bool ret;
-  startTestPthread start("a1_node", HIGH_LEVEL);
+  // startTestPthread start("a1_node", HIGH_LEVEL);
   sleep(1);
   TestNode pub(CMD_SET_VEL);
   int cnt = 1;

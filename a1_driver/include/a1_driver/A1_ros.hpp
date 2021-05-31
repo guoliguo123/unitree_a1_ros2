@@ -40,6 +40,7 @@ public:
   : wrapper(A1Wrapper(sport_mode, level))
   {
     this->node_name = node_name;
+    A1_node = rclcpp::Node::make_shared(this->node_name);
   }
   bool node_init();
   void get_high_state_msg(
@@ -50,8 +51,16 @@ public:
   void get_imu_msg(std::shared_ptr<a1_msgs::srv::Imu::Response> response);
   void get_cartesian_msg(
     std::shared_ptr<a1_msgs::srv::Cartesian::Response> response);
-  A1Wrapper wrapper;
 
+  void velocity_subscription_init();
+  void pose_subscription_init();
+  void mode_service_init();
+  void get_high_state_init();
+  void get_low_state_init();
+  void get_imu_init();
+  void get_cartesian_init();
+  A1Wrapper wrapper;
+  std::shared_ptr<rclcpp::Node> A1_node;
 private:
   std::string node_name;
   using ModeRequest = std::shared_ptr<a1_msgs::srv::Mode::Request>;

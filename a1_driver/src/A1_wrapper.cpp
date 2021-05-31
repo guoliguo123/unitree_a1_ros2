@@ -46,6 +46,7 @@ bool A1Wrapper::set_mode(uint8_t mode)
     return false;
   }
   memset(&highCmd, 0, sizeof(highCmd));
+  std::cout << "set mode ========" << std::endl;
   highCmd.mode = mode;
   if (udp.SetSend(highCmd) != 0) {
     return false;
