@@ -16,7 +16,7 @@
 // TEST 1: set mode
 TEST(A1RosTest, SetModeTest) {
   bool ret = true;
-
+  auto sub_thread = std::thread([&]() {std::cout << "8888888" <<std::endl;});
   unsigned int pid;
   pid = fork();
   if (pid < 0) {
@@ -27,6 +27,7 @@ TEST(A1RosTest, SetModeTest) {
     std::cout << "start child process 2" << std::endl;
     start.pthreadLoop();
   }
+
   std::cout << "parent process " << std::endl;
   // startTestPthread start("a1_node", HIGH_LEVEL);
   TestNode client(CMD_SET_MODE);
@@ -155,6 +156,7 @@ TEST(A1RosTest, GetImu) {
     EXPECT_EQ(ret, false);
   }
 }
+
 #endif
 int main(int argc, char ** argv)
 {
