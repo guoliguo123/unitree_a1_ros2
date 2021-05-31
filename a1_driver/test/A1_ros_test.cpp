@@ -16,7 +16,7 @@
 // TEST 1: set mode
 TEST(A1RosTest, SetModeTest) {
   bool ret = true;
-#if 0
+
   unsigned int pid;
   pid = fork();
   if (pid < 0) {
@@ -29,7 +29,7 @@ TEST(A1RosTest, SetModeTest) {
   }
   std::cout << "parent process " << std::endl;
 #endif
-  // startTestPthread start("a1_node", HIGH_LEVEL);
+  TestNode client(CMD_SET_MODE);
   int cnt = 2;
   TestNode client(CMD_SET_MODE);
 
@@ -70,9 +70,9 @@ TEST(A1RosTest, SetModeTest) {
     // EXPECT_EQ(roll, start.a1_ros.wrapper.highCmd.roll);
     // EXPECT_EQ(bodyHeight, start.a1_ros.wrapper.highCmd.bodyHeight);
   }
-  // std::cout << "kill child process " << std::endl;
-  // int result = kill(pid, 9);
-  // std::cout << "result =  " << result << std::endl;
+  std::cout << "kill child process " << std::endl;
+  int result = kill(pid, 9);
+  std::cout << "result =  " << result << std::endl;
 }
 #if 1
 // TEST 2: set velocity

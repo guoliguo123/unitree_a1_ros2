@@ -35,7 +35,8 @@ using namespace std::chrono_literals;//NOLINT
 class startTestPthread
 {
 public:
-  startTestPthread(std::string node_name, int level):a1_ros(node_name, level)
+  startTestPthread(std::string node_name, int level)
+  : a1_ros(node_name, level)
   {
     // t = boost::thread(boost::bind(&startTestPthread::pthreadLoop, this));
   }
