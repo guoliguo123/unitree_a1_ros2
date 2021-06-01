@@ -16,7 +16,20 @@
 // TEST 1: set mode
 TEST(A1RosTest, SetModeTest) {
   bool ret = true;
-  auto sub_thread = std::thread([&]() {std::cout << "8888888" <<std::endl;});
+  auto pub_thread = std::thread([&]() {
+      std::cout << "8888888" <<std::endl;
+      auto A1_node = rclcpp::Node::make_shared("A1_node");
+      auto vel_sub = A1_node->create_subscription<geometry_msgs::msg::Twist>(
+      ROS2_TOPIC_SET_VELOCITY, 10,
+      [this](geometry_msgs::msg::Twist::UniquePtr msg) {
+          RCLCPP_INFO(
+              rclcpp::get_logger("rcv_vel"),
+              "forwardSpeed[%0.2f],sideSpeed[%0.2f],rotateSpeed[%0.2f]",
+              msg->linear.x, msg->linear.y, msg->angular.z);
+      });
+      rclcpp::spin(A1_node);
+  });
+
   unsigned int pid;
 #if 0
   pid = fork();
@@ -29,6 +42,7 @@ TEST(A1RosTest, SetModeTest) {
     start.pthreadLoop();
   }
 #endif
+#if 0
   std::cout << "parent process " << std::endl;
   // startTestPthread start("a1_node", HIGH_LEVEL);
   TestNode client(CMD_SET_MODE);
@@ -41,8 +55,9 @@ TEST(A1RosTest, SetModeTest) {
     // uint8_t mode = start.a1_ros.wrapper.highCmd.mode;
     // EXPECT_EQ(mode, 2);
   }
+#endif
   TestNode pub_vel(CMD_SET_VEL);
-  cnt = 2;
+  int cnt = 2;
   while (cnt--) {
     float forwardSpeed = 0.2;
     float sideSpeed = 0.2;
@@ -54,7 +69,9 @@ TEST(A1RosTest, SetModeTest) {
     // EXPECT_EQ(sideSpeed, start.a1_ros.wrapper.highCmd.sideSpeed);
     // EXPECT_EQ(rotateSpeed, start.a1_ros.wrapper.highCmd.rotateSpeed);
   }
-
+  rclcpp::shutdown();
+  pub_thread.join();
+#if 0
   TestNode pub(CMD_SET_POSE);
   cnt = 2;
   while (cnt--) {
@@ -69,6 +86,7 @@ TEST(A1RosTest, SetModeTest) {
     // EXPECT_EQ(roll, start.a1_ros.wrapper.highCmd.roll);
     // EXPECT_EQ(bodyHeight, start.a1_ros.wrapper.highCmd.bodyHeight);
   }
+#endif
 #if 0
   std::cout << "kill child process " << std::endl;
   int result = kill(pid, 9);
