@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "A1_ros_test.hpp"
+#if 0
 // TEST 1: set mode
 TEST(A1RosTest, SetModeTest) {
   bool ret = true;
@@ -32,7 +33,7 @@ TEST(A1RosTest, SetModeTest) {
     });
 
   unsigned int pid;
-#if 0
+
   pid = fork();
   if (pid < 0) {
     return;
@@ -44,56 +45,59 @@ TEST(A1RosTest, SetModeTest) {
   }
 #endif
 #if 0
-  std::cout << "parent process " << std::endl;
-  // startTestPthread start("a1_node", HIGH_LEVEL);
-  TestNode client(CMD_SET_MODE);
-  int cnt = 2;
-  while (cnt--) {
-    client.wait_time(1);
-    ret = client.client_set_mode(2);
-    EXPECT_EQ(ret, true);
-    client.wait_time(1);
-    // uint8_t mode = start.a1_ros.wrapper.highCmd.mode;
-    // EXPECT_EQ(mode, 2);
-  }
-#endif
-  TestNode pub_vel(CMD_SET_VEL);
-  int cnt = 2;
-  while (cnt--) {
-    float forwardSpeed = 0.2;
-    float sideSpeed = 0.2;
-    float rotateSpeed = 0.2;
-    ret = pub_vel.pub_velocity(forwardSpeed, sideSpeed, rotateSpeed);
-    EXPECT_EQ(ret, true);
-    pub_vel.wait_time(2);
-    // EXPECT_EQ(forwardSpeed, start.a1_ros.wrapper.highCmd.forwardSpeed);
-    // EXPECT_EQ(sideSpeed, start.a1_ros.wrapper.highCmd.sideSpeed);
-    // EXPECT_EQ(rotateSpeed, start.a1_ros.wrapper.highCmd.rotateSpeed);
-  }
-  rclcpp::shutdown();
-  pub_thread.join();
-#if 0
-  TestNode pub(CMD_SET_POSE);
-  cnt = 2;
-  while (cnt--) {
-    float yaw = 0.3;
-    float pitch = 0.3;
-    float roll = 0.3;
-    float bodyHeight = 0.3;
-    pub.pub_pose(yaw, pitch, roll, bodyHeight);
-    pub.wait_time(2);
-    // EXPECT_EQ(yaw, start.a1_ros.wrapper.highCmd.yaw);
-    // EXPECT_EQ(pitch, start.a1_ros.wrapper.highCmd.pitch);
-    // EXPECT_EQ(roll, start.a1_ros.wrapper.highCmd.roll);
-    // EXPECT_EQ(bodyHeight, start.a1_ros.wrapper.highCmd.bodyHeight);
-  }
-#endif
-#if 0
-  std::cout << "kill child process " << std::endl;
-  int result = kill(pid, 9);
-  std::cout << "result =  " << result << std::endl;
-#endif
+std::cout << "parent process " << std::endl;
+// startTestPthread start("a1_node", HIGH_LEVEL);
+TestNode client(CMD_SET_MODE);
+int cnt = 2;
+while (cnt--) {
+  client.wait_time(1);
+  ret = client.client_set_mode(2);
+  EXPECT_EQ(ret, true);
+  client.wait_time(1);
+  // uint8_t mode = start.a1_ros.wrapper.highCmd.mode;
+  // EXPECT_EQ(mode, 2);
 }
+#endif
+#if 0
+TestNode pub_vel(CMD_SET_VEL);
+int cnt = 2;
+while (cnt--) {
+  float forwardSpeed = 0.2;
+  float sideSpeed = 0.2;
+  float rotateSpeed = 0.2;
+  ret = pub_vel.pub_velocity(forwardSpeed, sideSpeed, rotateSpeed);
+  EXPECT_EQ(ret, true);
+  pub_vel.wait_time(2);
+  // EXPECT_EQ(forwardSpeed, start.a1_ros.wrapper.highCmd.forwardSpeed);
+  // EXPECT_EQ(sideSpeed, start.a1_ros.wrapper.highCmd.sideSpeed);
+  // EXPECT_EQ(rotateSpeed, start.a1_ros.wrapper.highCmd.rotateSpeed);
+}
+rclcpp::shutdown();
+pub_thread.join();
+#endif
+#if 0
+TestNode pub(CMD_SET_POSE);
+cnt = 2;
+while (cnt--) {
+  float yaw = 0.3;
+  float pitch = 0.3;
+  float roll = 0.3;
+  float bodyHeight = 0.3;
+  pub.pub_pose(yaw, pitch, roll, bodyHeight);
+  pub.wait_time(2);
+  // EXPECT_EQ(yaw, start.a1_ros.wrapper.highCmd.yaw);
+  // EXPECT_EQ(pitch, start.a1_ros.wrapper.highCmd.pitch);
+  // EXPECT_EQ(roll, start.a1_ros.wrapper.highCmd.roll);
+  // EXPECT_EQ(bodyHeight, start.a1_ros.wrapper.highCmd.bodyHeight);
+}
+#endif
+#if 0
+std::cout << "kill child process " << std::endl;
+int result = kill(pid, 9);
+std::cout << "result =  " << result << std::endl;
+}
+#endif
+
 #if 0
 // TEST 5: get high state
 TEST(A1RosTest, GetHigh) {
@@ -180,6 +184,32 @@ TEST(A1RosTest, GetImu) {
 }
 
 #endif
+TEST(A1RosTest, SetModeTest) {
+  bool ret = true;
+  auto ros_thread = std::thread(
+    [&]() {
+      std::cout << "8888888" << std::endl;
+      A1ROS a1_ros = A1ROS("A1_node", STARTUP_SPORT_MODE, HIGH_LEVEL);
+      a1_ros.node_init();
+    });
+
+
+  TestNode pub_vel(CMD_SET_VEL);
+  int cnt = 2;
+  while (cnt--) {
+    float forwardSpeed = 0.2;
+    float sideSpeed = 0.2;
+    float rotateSpeed = 0.2;
+    ret = pub_vel.pub_velocity(forwardSpeed, sideSpeed, rotateSpeed);
+    EXPECT_EQ(ret, true);
+    pub_vel.wait_time(2);
+    // EXPECT_EQ(forwardSpeed, start.a1_ros.wrapper.highCmd.forwardSpeed);
+    // EXPECT_EQ(sideSpeed, start.a1_ros.wrapper.highCmd.sideSpeed);
+    // EXPECT_EQ(rotateSpeed, start.a1_ros.wrapper.highCmd.rotateSpeed);
+  }
+  rclcpp::shutdown();
+  ros_thread.join();
+}
 int main(int argc, char ** argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
