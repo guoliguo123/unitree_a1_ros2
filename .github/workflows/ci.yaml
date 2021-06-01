@@ -9,11 +9,8 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-      - run: 
-          command: |
-            sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
       - uses: actions/checkout@v2
-      - uses: ros-tooling/setup-ros@v0.1
+      - uses: ros-tooling/setup-ros@v0.2.1
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
           package-name:
