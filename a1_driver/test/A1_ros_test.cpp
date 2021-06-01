@@ -16,19 +16,20 @@
 // TEST 1: set mode
 TEST(A1RosTest, SetModeTest) {
   bool ret = true;
-  auto pub_thread = std::thread([&]() {
-      std::cout << "8888888" <<std::endl;
+  auto pub_thread = std::thread(
+    [&]() {
+      std::cout << "8888888" << std::endl;
       auto A1_node = rclcpp::Node::make_shared("A1_node");
       auto vel_sub = A1_node->create_subscription<geometry_msgs::msg::Twist>(
-      ROS2_TOPIC_SET_VELOCITY, 10,
-      [this](geometry_msgs::msg::Twist::UniquePtr msg) {
+        ROS2_TOPIC_SET_VELOCITY, 10,
+        [this](geometry_msgs::msg::Twist::UniquePtr msg) {
           RCLCPP_INFO(
-              rclcpp::get_logger("rcv_vel"),
-              "forwardSpeed[%0.2f],sideSpeed[%0.2f],rotateSpeed[%0.2f]",
-              msg->linear.x, msg->linear.y, msg->angular.z);
-      });
+            rclcpp::get_logger("rcv_vel"),
+            "forwardSpeed[%0.2f],sideSpeed[%0.2f],rotateSpeed[%0.2f]",
+            msg->linear.x, msg->linear.y, msg->angular.z);
+        });
       rclcpp::spin(A1_node);
-  });
+    });
 
   unsigned int pid;
 #if 0
