@@ -190,7 +190,6 @@ bool A1ROS::node_init()
       RCLCPP_INFO(rclcpp::get_logger("get_cartesian_msg"), "get cartesian msg");
       get_cartesian_msg(response);
     });
-#if 0
   UNITREE_LEGGED_SDK::InitEnvironment();
   float dt = 0.002f;
   UNITREE_LEGGED_SDK::LoopFunc loop_udpRecv(
@@ -199,7 +198,6 @@ bool A1ROS::node_init()
     "udp_send", dt, 3, boost::bind(&A1Wrapper::UDPSend, &wrapper));
   loop_udpRecv.start();
   loop_udpSend.start();
-#endif
   rclcpp::spin(A1_node);
   rclcpp::shutdown();
   return true;

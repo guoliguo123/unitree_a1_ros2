@@ -30,27 +30,73 @@ enum command
   CMD_GET_IMU,
   CMD_GET_CARTESIAN
 };
-
+typedef struct test
+{
+  u_int8_t command;
+  union {
+    int in_test_cnt;
+    float in_forwardSpeed;
+    float in_sideSpeed;
+    float in_rotateSpeed;
+  } vel;
+  union {
+    float in_yaw;
+    float in_pitch;
+    float in_roll;
+    float in_bodyHeight;
+  } pose;
+} TestParam;
 using namespace std::chrono_literals;//NOLINT
-class startTestPthread
+class TestRosNode
 {
 public:
-  startTestPthread(std::string node_name, int level)
-  : a1_ros(node_name, level)
-  {
-    std::thread t1(&startTestPthread::pthreadLoop, this);
-    // boost::thread(boost::bind(&startTestPthread::pthreadLoop, this));
-  }
-
-
-  void pthreadLoop()
-  {
-    a1_ros.node_init();
-  }
-  A1ROS a1_ros;
-  // boost::thread t;
+  TestRosNode() {}
+  bool TestRosInit();
+  int vel_test_cnt;
+  int pose_test_cnt;
+  int mode_test_cnt;
+  TestParam TestResult {};
+  using ModeRequest = std::shared_ptr<a1_msgs::srv::Mode::Request>;
+  using ModeResponse = std::shared_ptr<a1_msgs::srv::Mode::Response>;
 };
 
+bool TestRosNode::TestRosInit()
+{
+  auto A1_node = rclcpp::Node::make_shared("A1_node");
+  auto vel_sub = A1_node->create_subscription<geometry_msgs::msg::Twist>(
+    ROS2_TOPIC_SET_VELOCITY, 10,
+    [this](geometry_msgs::msg::Twist::UniquePtr msg) {
+      RCLCPP_INFO(
+        rclcpp::get_logger("rcv_vel"),
+        "forwardSpeed[%0.2f],sideSpeed[%0.2f],rotateSpeed[%0.2f]",
+        msg->linear.x, msg->linear.y, msg->angular.z);
+      EXPECT_EQ(TestResult.vel.in_forwardSpeed, msg->linear.x);
+      EXPECT_EQ(TestResult.vel.in_sideSpeed, msg->linear.y);
+      EXPECT_EQ(TestResult.vel.in_rotateSpeed, msg->angular.z);
+    });
+
+  EXPECT_NE(nullptr, vel_sub);
+  auto pose_sub = A1_node->create_subscription<a1_msgs::msg::Pose>(
+    ROS2_TOPIC_SET_POSE, 10, [this](a1_msgs::msg::Pose::UniquePtr msg) {
+      RCLCPP_INFO(
+        rclcpp::get_logger("rcv_pose"),
+        "yaw[%0.2f], pitch[%0.2f], roll[%0.2f], bodyHeight[%0.2f]",
+        msg->yaw, msg->pitch, msg->roll, msg->bodyheight);
+      EXPECT_EQ(TestResult.pose.in_yaw, msg->yaw);
+      EXPECT_EQ(TestResult.pose.in_pitch, msg->pitch);
+      EXPECT_EQ(TestResult.pose.in_roll, msg->roll);
+      EXPECT_EQ(TestResult.pose.in_bodyHeight, msg->bodyheight);
+    });
+  EXPECT_NE(nullptr, pose_sub);
+  auto mode_service = A1_node->create_service<a1_msgs::srv::Mode>(
+    ROS2_SERVICE_SET_MODE,
+    [this](const ModeRequest request, ModeResponse response) {
+      RCLCPP_INFO(rclcpp::get_logger("set_mode"), "mode[%d]", request->mode);
+    });
+  EXPECT_NE(nullptr, mode_service);
+  rclcpp::spin(A1_node);
+  return true;
+}
 class TestNode
 {
 public:
