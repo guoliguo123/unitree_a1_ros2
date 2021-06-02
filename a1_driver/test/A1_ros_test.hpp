@@ -32,7 +32,9 @@ enum command
 };
 typedef struct test
 {
-  u_int8_t command;
+  union {
+    u_int8_t mode;
+  } mode;
   union {
     int in_test_cnt;
     float in_forwardSpeed;
@@ -45,6 +47,11 @@ typedef struct test
     float in_roll;
     float in_bodyHeight;
   } pose;
+  union {
+    int request_cnt;
+    int response_cnt;
+    bool success_flag;
+  } HighState;
 } TestParam;
 using namespace std::chrono_literals;//NOLINT
 class TestRosNode
@@ -58,6 +65,8 @@ public:
   TestParam TestResult {};
   using ModeRequest = std::shared_ptr<a1_msgs::srv::Mode::Request>;
   using ModeResponse = std::shared_ptr<a1_msgs::srv::Mode::Response>;
+  using HighStateRequest = std::shared_ptr<a1_msgs::srv::HighState::Request>;
+  using HighStateResponse = std::shared_ptr<a1_msgs::srv::HighState::Response>;
 };
 
 bool TestRosNode::TestRosInit()
@@ -92,8 +101,17 @@ bool TestRosNode::TestRosInit()
     ROS2_SERVICE_SET_MODE,
     [this](const ModeRequest request, ModeResponse response) {
       RCLCPP_INFO(rclcpp::get_logger("set_mode"), "mode[%d]", request->mode);
+      EXPECT_EQ(TestResult.mode.mode, request->mode);
     });
   EXPECT_NE(nullptr, mode_service);
+  auto hgih_state_service = A1_node->create_service<a1_msgs::srv::HighState>(
+    ROS2_SERVICE_GET_HIGH_STATE_MSG,
+    [this](const HighStateRequest request, HighStateResponse response) {
+      RCLCPP_INFO(rclcpp::get_logger("get_high_state"), "get high state");
+      TestResult.HighState.request_cnt++;
+      EXPECT_EQ(TestResult.HighState.request_cnt, TestResult.HighState.response_cnt);
+    });
+  EXPECT_NE(nullptr, hgih_state_service);
   rclcpp::spin(A1_node);
   return true;
 }
@@ -225,7 +243,6 @@ bool TestNode::client_node_get_high_state()
 {
   size_t times = 0;
   auto request = std::make_shared<a1_msgs::srv::HighState::Request>();
-
   while (!high_state_client->wait_for_service(1s)) {
     times++;
     RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting times(%d)...", times);
@@ -233,13 +250,12 @@ bool TestNode::client_node_get_high_state()
       return false;
     }
   }
-
   auto result = high_state_client->async_send_request(request);
   // Wait for the result.
   if (rclcpp::spin_until_future_complete(node, result) ==
     rclcpp::executor::FutureReturnCode::SUCCESS)
   {
-    // auto HighState = result.get();
+     return true;
   } else {
     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service");
     return false;

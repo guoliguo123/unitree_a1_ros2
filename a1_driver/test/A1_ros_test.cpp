@@ -13,16 +13,9 @@
 // limitations under the License.
 
 #include "A1_ros_test.hpp"
-// 1.test set velocity
-TEST(A1RosTest, SetVelTest) {
-  TestRosNode testRos;
-  auto ros_thread = std::thread(
-    [&]() {
-      std::cout << "start ros" << std::endl;
-      bool result = testRos.TestRosInit();
-      EXPECT_EQ(result, true);
-    });
-
+// 1.set vel test
+void test_set_velocity(TestRosNode & testRos)
+{
   TestNode pub_vel(CMD_SET_VEL);
   int cnt = 2;
   while (cnt--) {
@@ -37,9 +30,12 @@ TEST(A1RosTest, SetVelTest) {
     EXPECT_EQ(ret, true);
     pub_vel.wait_time(2);
   }
-  sleep(1);
+}
+// 2.set pose test
+void test_set_pose(TestRosNode & testRos)
+{
   TestNode set_pose(CMD_SET_POSE);
-  cnt = 2;
+  int cnt = 2;
   while (cnt--) {
     float yaw = 0.2;
     float pitch = 0.2;
@@ -55,6 +51,52 @@ TEST(A1RosTest, SetVelTest) {
     std::cout << "test over" << std::endl;
     set_pose.wait_time(2);
   }
+}
+// 3.set mode test
+void test_set_mode(TestRosNode & testRos)
+{
+  TestNode set_mode(CMD_SET_MODE);
+  int cnt = 2;
+  while (cnt--) {
+    u_int8_t mode = 2;
+    testRos.TestResult.mode.mode = mode;
+    set_mode.client_set_mode(mode);
+    set_mode.wait_time(2);
+  }
+}
+// 4.get highState test
+void test_get_high_state(TestRosNode & testRos)
+{
+  TestNode get_highState(CMD_GET_HIGH_STATE);
+  int cnt = 2;
+  while (cnt--) {
+    std::cout << "get state" << std::endl;
+    bool ret = get_highState.client_node_get_high_state();
+    EXPECT_EQ(ret, true);
+    testRos.TestResult.HighState.response_cnt++;
+    get_highState.wait_time(2);
+  }
+  EXPECT_EQ(testRos.TestResult.HighState.request_cnt, testRos.TestResult.HighState.response_cnt);
+}
+TEST(A1RosTest, SetVelTest) {
+  TestRosNode testRos;
+  auto ros_thread = std::thread(
+    [&]() {
+      std::cout << "start ros" << std::endl;
+      bool result = testRos.TestRosInit();
+      EXPECT_EQ(result, true);
+    });
+  // 1.set velocity
+  test_set_velocity(testRos);
+  sleep(1);
+  // 2.set pose
+  test_set_pose(testRos);
+  sleep(1);
+  // 3.set mode
+  test_set_mode(testRos);
+  sleep(1);
+  // 4.get high state test
+  // test_get_high_state(testRos);
   sleep(1);
   rclcpp::shutdown();
   ros_thread.join();
