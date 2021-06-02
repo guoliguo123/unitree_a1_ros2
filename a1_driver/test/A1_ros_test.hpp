@@ -255,7 +255,7 @@ bool TestNode::client_node_get_high_state()
   if (rclcpp::spin_until_future_complete(node, result) ==
     rclcpp::executor::FutureReturnCode::SUCCESS)
   {
-     return true;
+    // auto HighState = result.get();
   } else {
     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service");
     return false;
